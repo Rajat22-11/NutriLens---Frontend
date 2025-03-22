@@ -1,0 +1,420 @@
+/* App Background */
+.app-background {
+    background-color: #FFFAF0;
+    min-height: 100vh;
+    padding-bottom: 64px;
+    padding-top: 32px;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(255, 107, 53, 0.05) 0%, transparent 40%), 
+      radial-gradient(circle at 80% 80%, rgba(46, 196, 182, 0.07) 0%, transparent 40%);
+  }
+  
+  /* Header Section */
+  .header-section {
+    text-align: center;
+    margin-bottom: 48px;
+    padding-top: 16px;
+    border-bottom: 4px solid #FF8C5F;
+    padding-bottom: 16px;
+    position: relative;
+  }
+  
+  .header-icon {
+    font-size: 80px !important;
+    color: #FF6B35;
+    position: absolute;
+    left: 15%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  @media (max-width: 600px) {
+    .header-icon {
+      display: none;
+    }
+  }
+  
+  .app-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    background: linear-gradient(90deg, #FF6B35 0%, #E25420 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .app-subtitle {
+    color: #555555;
+    margin-top: 8px;
+    font-weight: 400;
+  }
+  
+  /* Upload Card */
+  .upload-card {
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  
+  .upload-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  
+  .upload-title {
+    color: #E25420;
+    margin-bottom: 16px;
+  }
+  
+  .upload-button {
+    padding: 12px;
+    font-size: 18px;
+  }
+  
+  /* Image Cards */
+  .image-label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555555;
+  }
+  
+  .image-card {
+    margin-bottom: 16px;
+    height: 320px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .food-image {
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Loading State */
+  .loading-container {
+    text-align: center;
+    padding: 32px 0;
+  }
+  
+ /* Calorie Card */
+.calorie-card {
+    margin-top: 24px;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(255,202,58,0.2) 0%, rgba(255,155,58,0.2) 100%);
+    border: 1px solid rgba(255,202,58, 0.3);
+  }
+  
+  .calorie-avatar {
+    background-color: #FFCA3A !important;
+    width: 56px !important;
+    height: 56px !important;
+    box-shadow: 0 4px 12px rgba(255,202,58,0.4);
+  }
+  
+  .calorie-value {
+    font-weight: 800 !important;
+    color: #E6A100 !important;
+  }
+  
+  /* Analysis Card */
+  .analysis-card {
+    padding: 0;
+    overflow: hidden;
+    min-height: 550px;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  
+  .analysis-header {
+    padding: 24px;
+    background: linear-gradient(90deg, rgba(46,196,182,0.15) 0%, rgba(138,201,38,0.1) 100%);
+    border-bottom: 1px solid rgba(46,196,182,0.2);
+  }
+  
+  .analysis-content {
+    padding: 32px;
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 650px;
+  }
+  
+  .empty-analysis {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 400px;
+    opacity: 0.7;
+  }
+  
+  .empty-text {
+    margin-top: 24px;
+    color: #777777;
+    text-align: center;
+  }
+  
+  .analysis-result {
+    line-height: 1.8;
+    font-size: 16px;
+  }
+  
+  .analysis-result h2, .analysis-result h3, .analysis-result h4 {
+    color: #FF6B35;
+    margin-top: 24px;
+    margin-bottom: 12px;
+  }
+  
+  .analysis-result ul, .analysis-result ol {
+    padding-left: 24px;
+    margin-bottom: 16px;
+  }
+  
+  .analysis-result li {
+    margin-bottom: 8px;
+  }
+  
+  .analysis-result strong {
+    color: #2EC4B6;
+    font-weight: 600;
+  }
+  
+  /* Footer Section */
+  .footer-section {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 2px solid rgba(46,196,182,0.2);
+  }
+  
+  .footer-button {
+    margin: 8px 16px !important;
+  }
+  
+  /* Animation Effects */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .analysis-result {
+    animation: fadeIn 0.6s ease-in-out;
+  }
+  
+  /* Custom scrollbar for analysis content */
+  .analysis-content::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .analysis-content::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.05);
+    border-radius: 4px;
+  }
+  
+  .analysis-content::-webkit-scrollbar-thumb {
+    background: rgba(46,196,182,0.5);
+    border-radius: 4px;
+  }
+  
+  .analysis-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(46,196,182,0.7);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 960px) {
+    .header-section {
+      margin-bottom: 32px;
+    }
+    
+    .analysis-card {
+      min-height: 400px;
+      margin-top: 32px;
+    }
+    
+    .footer-section {
+      flex-direction: column;
+    }
+    
+    .footer-button {
+      width: 100%;
+      margin: 8px 0 !important;
+    }
+  }
+  
+  /* Food item highlight styles */
+  .food-item {
+    background-color: rgba(255,107,53,0.1);
+    border-left: 3px solid #FF6B35;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 0 8px 8px 0;
+  }
+  
+  /* Health indicator styles */
+  .health-indicator {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-weight: 600;
+    margin: 8px 0;
+  }
+  
+  .health-good {
+    background-color: rgba(138,201,38,0.2);
+    color: #5A8016;
+  }
+  
+  .health-moderate {
+    background-color: rgba(255,202,58,0.2);
+    color: #B78D14;
+  }
+  
+  .health-warning {
+    background-color: rgba(255,107,53,0.2);
+    color: #CC4718;
+  }
+  
+  /* Text emphasis styles */
+  .text-highlight {
+    background: linear-gradient(90deg, rgba(46,196,182,0.15) 0%, rgba(46,196,182,0) 100%);
+    padding: 2px 4px;
+  }
+  
+  /* Stat box styles for nutritional info */
+  .stat-box {
+    background-color: #F8F8F8;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 8px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .stat-box-label {
+    font-weight: 600;
+    color: #555555;
+  }
+  
+  .stat-box-value {
+    font-weight: 700;
+    color: #FF6B35;
+  }
+  
+  /* Enhanced hover effects */
+  .upload-card:hover, .analysis-card:hover, .calorie-card:hover {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+  }
+
+  /* Enhanced nutrition analysis styling */
+.nutrition-analysis {
+  padding: 16px;
+  font-family: 'Poppins', sans-serif;
+  color: #444;
+}
+
+/* Food title styling */
+.nutrition-analysis h2,
+.nutrition-analysis .food-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #FF6B35;
+  margin: 0 0 16px;
+  border-bottom: 2px solid rgba(255, 107, 53, 0.2);
+  padding-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Section headers */
+.nutrition-analysis h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #E25420;
+  margin: 20px 0 12px;
+}
+
+/* Basic text styling */
+.nutrition-analysis p {
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.nutrition-analysis strong {
+  color: #2EC4B6;
+  font-weight: 600;
+}
+
+/* Nutrition list styling */
+.nutrition-analysis ul {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+}
+
+.nutrition-analysis .nutrition-item {
+  padding: 8px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.nutrition-analysis .nutrition-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+}
+
+/* Info boxes styling */
+.nutrition-analysis .health-insight,
+.nutrition-analysis .healthier-options,
+.nutrition-analysis .fun-fact {
+  padding: 14px;
+  margin: 16px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.nutrition-analysis .health-insight {
+  background: linear-gradient(to right, rgba(255, 107, 53, 0.1), rgba(255, 107, 53, 0.02));
+  border-left: 4px solid #FF6B35;
+}
+
+.nutrition-analysis .healthier-options {
+  background: linear-gradient(to right, rgba(46, 196, 182, 0.1), rgba(46, 196, 182, 0.02));
+  border-left: 4px solid #2EC4B6;
+}
+
+.nutrition-analysis .fun-fact {
+  background: linear-gradient(to right, rgba(255, 202, 58, 0.1), rgba(255, 202, 58, 0.02));
+  border-left: 4px solid #FFCA3A;
+}
+
+/* List styling in info boxes */
+.nutrition-analysis .healthier-options ul {
+  display: block;
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-top: 8px;
+}
+
+.nutrition-analysis .healthier-options li {
+  margin-bottom: 8px;
+  padding: 0;
+  background: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .nutrition-analysis ul {
+    grid-template-columns: 1fr;
+  }
+}

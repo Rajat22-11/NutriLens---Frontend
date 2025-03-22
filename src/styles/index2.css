@@ -1,0 +1,351 @@
+/* Variables */
+:root {
+  --primary-color: #ff9800; /* Orange */
+  --primary-light: #ffb74d; /* Light Orange */
+  --primary-dark: #f57c00; /* Dark Orange */
+  --secondary-color: #ff6f00;
+  --secondary-light: #ff9e40;
+  --secondary-dark: #c43e00;
+  --text-on-primary: #ffffff;
+  --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  --animation-duration: 0.3s;
+}
+
+/* Global Styles */
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.app-background {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f9f9f9, #f1f1f1);
+  position: relative;
+}
+
+/* Navigation Styles */
+.app-logo {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.logo-icon {
+  margin-right: 12px;
+  font-size: 28px;
+}
+
+.menu-button {
+  margin-right: 16px;
+  transition: transform var(--animation-duration);
+}
+
+.menu-button:hover {
+  transform: scale(1.1);
+}
+
+.dashboard-button {
+  margin-right: 16px;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 20px;
+  transition: background-color var(--animation-duration);
+}
+
+.dashboard-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.user-controls {
+  display: flex;
+  align-items: center;
+}
+
+.history-button {
+  margin-right: 16px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.premium-badge {
+  margin-right: 8px;
+}
+
+.user-avatar-container {
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+}
+
+.username {
+  margin-right: 8px;
+  font-weight: 500;
+}
+
+.user-avatar {
+  background-color: var(--secondary-color);
+  transition: transform var(--animation-duration);
+}
+
+.avatar-button:hover .user-avatar {
+  transform: scale(1.1);
+}
+
+/* Main Content Styles */
+.main-container {
+  padding: 32px 16px;
+  margin-top: 64px;
+}
+
+.upload-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  transition: transform var(--animation-duration);
+  margin-bottom: 24px;
+}
+
+.upload-card:hover {
+  transform: translateY(-5px);
+}
+
+.upload-header {
+  margin-bottom: 24px;
+}
+
+.upload-title {
+  margin-bottom: 16px;
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
+.upload-button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+  font-weight: 500;
+  transition: background-color var(--animation-duration);
+}
+
+.upload-button:hover {
+  background-color: var(--primary-dark);
+}
+
+.image-label {
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #666;
+}
+
+.image-card {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.food-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.calorie-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  background: linear-gradient(120deg, #fff, #f9f9f9);
+  transition: transform var(--animation-duration);
+  min-height: 180px; /* Added minimum height */
+  padding: 24px; /* Added padding */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.calorie-card:hover {
+  transform: translateY(-5px);
+}
+
+.calorie-avatar {
+  background-color: var(--secondary-color);
+  width: 56px;
+  height: 56px;
+  margin-bottom: 16px; /* Added margin bottom */
+}
+
+.calorie-value {
+  font-weight: 700;
+  color: var(--secondary-dark);
+}
+
+.analysis-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  height: 100%;
+  transition: transform var(--animation-duration);
+}
+
+.analysis-card:hover {
+  transform: translateY(-5px);
+}
+
+.analysis-header {
+  padding: 16px;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #eee;
+}
+
+.analysis-content {
+  min-height: 400px;
+  padding: 24px;
+}
+
+.empty-analysis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+
+.empty-text {
+  margin-top: 16px;
+  color: #888;
+  font-weight: 400;
+}
+
+.analysis-result {
+  padding: 16px;
+}
+
+.nutrition-analysis {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.nutrition-analysis h1,
+.nutrition-analysis h2 {
+  color: var(--primary-dark);
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
+.nutrition-analysis table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+}
+
+.nutrition-analysis th,
+.nutrition-analysis td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.nutrition-analysis th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1300;
+}
+
+.loading-content {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* History Dialog */
+.history-title {
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
+.history-card {
+  transition: transform var(--animation-duration);
+  overflow: hidden;
+  height: 100%;
+}
+
+.history-card:hover {
+  transform: translateY(-5px);
+}
+
+.history-calories {
+  font-weight: 600;
+  color: var(--secondary-dark);
+}
+
+.empty-history {
+  text-align: center;
+  padding: 30px;
+  color: #888;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 960px) {
+  .main-container {
+    padding: 16px 8px;
+  }
+
+  .user-controls {
+    display: none;
+  }
+
+  .dashboard-button {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .upload-title,
+  .analysis-header h5 {
+    font-size: 18px;
+  }
+
+  .calorie-value {
+    font-size: 24px;
+  }
+
+  .loading-content {
+    padding: 24px;
+    width: 80%;
+  }
+}

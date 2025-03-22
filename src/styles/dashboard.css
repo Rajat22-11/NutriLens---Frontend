@@ -1,0 +1,210 @@
+/* Dashboard Layout */
+.dashboard-container {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+.dashboard-content {
+  padding: 24px;
+  margin-top: 20px;
+}
+
+/* Loading Container */
+.loading-container {
+  text-align: center;
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.loading-text {
+  margin-top: 16px;
+  color: #666;
+}
+
+/* Summary Cards */
+.summary-section {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.section-icon {
+  margin-right: 8px;
+  color: #ff7043;
+}
+
+.summary-card {
+  height: 100%;
+  transition: transform 0.2s;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.card-value {
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.progress-container {
+  margin-top: 8px;
+}
+
+.progress-bar {
+  height: 8px;
+  border-radius: 4px;
+}
+
+.progress-label {
+  margin-top: 4px;
+  text-align: right;
+  font-size: 0.75rem;
+  color: #777;
+}
+
+/* Tabs */
+.time-selector {
+  margin: 24px 0;
+}
+
+.time-tabs {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 4px;
+}
+
+.section-divider {
+  margin: 24px 0;
+}
+
+/* Charts */
+.charts-section {
+  margin-bottom: 32px;
+}
+
+.chart-card {
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.chart-title {
+  margin-bottom: 16px;
+  font-weight: 600;
+  color: #555;
+}
+
+/* Analysis History */
+.recent-analysis-section {
+  margin-bottom: 32px;
+}
+
+.analysis-history-card {
+  height: 100%;
+  transition: transform 0.2s;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.analysis-history-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.history-image {
+  object-fit: cover;
+}
+
+.food-name {
+  font-weight: 600;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nutrient-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.nutrient-chip {
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+
+.timestamp {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+.empty-history-container {
+  text-align: center;
+  padding: 40px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.empty-history-text {
+  margin-bottom: 16px;
+  color: #666;
+}
+
+.upload-button {
+  margin-top: 16px;
+}
+
+/* Weekday Patterns */
+.weekday-patterns-section {
+  margin-bottom: 32px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 960px) {
+  .dashboard-content {
+    padding: 16px;
+  }
+}
+
+/* Color variations for cards */
+.calories-card .card-value {
+  color: #ff7043;
+}
+
+.protein-card .card-value {
+  color: #8884d8;
+}
+
+.carbs-card .card-value {
+  color: #82ca9d;
+}
+
+.fat-card .card-value {
+  color: #ffc658;
+}

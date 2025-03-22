@@ -1,0 +1,17 @@
+# Frontend Dependencies
+# These are managed through package.json and npm
+# See package.json for the complete list of dependencies
+
+# Main dependencies include:
+# - React
+# - Material UI
+# - Axios
+# - React Router
+# - Recharts
+# - Lottie animations
+
+# To install dependencies:
+# npm install
+
+# To run the development server:
+# npm run dev
