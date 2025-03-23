@@ -34,6 +34,7 @@ import HeightIcon from "@mui/icons-material/Height";
 import CakeIcon from "@mui/icons-material/Cake";
 import GoogleIcon from "@mui/icons-material/Google";
 import axios from "axios";
+import api from "../utils/axios-config"; // Import the configured axios instance
 import { foodTheme } from "../themes/theme";
 import "../styles/index.css";
 
@@ -88,11 +89,7 @@ const AuthPage = () => {
 
     try {
       // Replace with your actual API endpoint
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        loginForm,
-        { withCredentials: true }
-      );
+      const response = await api.post("/api/auth/login", loginForm);
 
       // Debug the response to see what we're getting
       console.log("Login response:", response.data);
@@ -151,11 +148,7 @@ const AuthPage = () => {
 
     try {
       // Replace with your actual API endpoint
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/signup",
-        signupForm,
-        { withCredentials: true }
-      );
+      const response = await api.post("/api/auth/signup", signupForm);
 
       // Check if token exists in response
       if (response.data.token) {

@@ -57,6 +57,7 @@ import {
   Tooltip as RechartTooltip,
 } from "recharts";
 import axios from "axios";
+import api from "../utils/axios-config"; // Import the configured axios instance
 import { useNavigate } from "react-router-dom";
 import SideNav from "../components/SideNav";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
@@ -164,14 +165,7 @@ const Dashboard = () => {
         return;
       }
 
-      const response = await axios.get(
-        "http://localhost:5000/api/user/profile",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get("/api/user/profile");
       setUserProfile(response.data);
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -186,14 +180,7 @@ const Dashboard = () => {
       const token = localStorage.getItem("auth_token");
       if (!token) return;
 
-      const response = await axios.get(
-        "http://localhost:5000/api/analysis/history",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get("/api/analysis/history");
       setAnalysisHistory(response.data);
     } catch (error) {
       console.error("Error fetching analysis history:", error);
@@ -205,14 +192,7 @@ const Dashboard = () => {
       const token = localStorage.getItem("auth_token");
       if (!token) return;
 
-      const response = await axios.get(
-        "http://localhost:5000/api/user/nutrition/summary",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get("/api/user/nutrition/summary");
       setNutritionSummary(response.data);
     } catch (error) {
       console.error("Error fetching nutrition summary:", error);
@@ -221,17 +201,7 @@ const Dashboard = () => {
 
   const fetchNutritionGoals = async () => {
     try {
-      const token = localStorage.getItem("auth_token");
-      if (!token) return;
-
-      const response = await axios.get(
-        "http://localhost:5000/api/user/nutrition/goals",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get("/api/user/nutrition/goals");
       setNutritionGoals(response.data);
     } catch (error) {
       console.error("Error fetching nutrition goals:", error);
@@ -240,17 +210,7 @@ const Dashboard = () => {
 
   const fetchMealTrends = async () => {
     try {
-      const token = localStorage.getItem("auth_token");
-      if (!token) return;
-
-      const response = await axios.get(
-        "http://localhost:5000/api/user/meal-trends",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get("/api/user/meal-trends");
       setMealTrends(response.data);
     } catch (error) {
       console.error("Error fetching meal trends:", error);
