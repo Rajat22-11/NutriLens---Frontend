@@ -2,6 +2,10 @@ import axios from "axios";
 
 import { config } from "../config/environment";
 
+// Add enhanced debugging to verify the API URL and connection
+console.log("Creating API client with base URL:", config.API_URL);
+console.log("Environment:", import.meta.env.MODE);
+
 // Create axios instance with base URL
 const api = axios.create({
   baseURL: config.API_URL, // Use environment-specific API URL
@@ -15,6 +19,15 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    console.log(
+      "Making request to:",
+      config.url,
+      "with base URL:",
+      config.baseURL,
+      "full URL:",
+      config.baseURL +
+        (config.url.startsWith("/") ? config.url : "/" + config.url)
+    );
     return config;
   },
   (error) => Promise.reject(error)
@@ -33,6 +46,12 @@ api.interceptors.response.use(
     // Handle connection errors (network issues)
     else if (!error.response) {
       console.error("Network Error: Unable to connect to the API server");
+      console.error("Request details:", {
+        url: error.config.url,
+        baseURL: error.config.baseURL,
+        method: error.config.method,
+        fullURL: error.config.baseURL + error.config.url,
+      });
       // You could dispatch to a global error state or show a notification here
       // For example, using a toast notification library
       if (window.showErrorToast) {
