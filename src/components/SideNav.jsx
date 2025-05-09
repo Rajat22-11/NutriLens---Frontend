@@ -44,14 +44,10 @@ const SideNav = ({ open, onClose, userProfile, onNavigate, onLogout }) => {
           backgroundColor: "#ffffff",
           boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
           border: "none",
-          marginTop: 0,
           height: "100%",
-          overflow: "hidden",
-          position: "fixed",
-          top: 0,
-          left: 0,
-          zIndex: 1000 /* Ensure it's below the navbar's z-index of 1100 */,
-          paddingTop: "64px" /* Add padding to the top instead of margin */,
+          overflowY: "auto", // Enable vertical scrolling
+          position: "relative", // Changed from fixed to relative
+          zIndex: 1200, // Increased z-index to ensure it's above other elements
         },
       }}
     >
@@ -63,6 +59,9 @@ const SideNav = ({ open, onClose, userProfile, onNavigate, onLogout }) => {
           padding: "16px",
           backgroundColor: "#FF9800", // Changed to orange
           color: "white",
+          position: "sticky", // Make the header sticky
+          top: 0, // Stick to the top
+          zIndex: 10, // Ensure it stays above scrolled content
         }}
       >
         <FastfoodIcon
@@ -269,6 +268,10 @@ const SideNav = ({ open, onClose, userProfile, onNavigate, onLogout }) => {
         sx={{
           padding: "16px",
           borderTop: "1px solid rgba(0, 0, 0, 0.08)",
+          position: "sticky", // Make logout button sticky
+          bottom: 0, // Stick to bottom
+          backgroundColor: "#ffffff", // Match drawer background
+          zIndex: 10, // Ensure it stays above scrolled content
         }}
       >
         <Button
