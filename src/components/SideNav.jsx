@@ -29,6 +29,10 @@ const SideNav = ({ open, onClose, userProfile, onNavigate, onLogout }) => {
     onClose();
     if (page === "dashboard") {
       onNavigate();
+    } else if (page === "settings") {
+      window.location.href = "/settings";
+    } else if (page === "home") {
+      window.location.href = "/index";
     }
   };
 
@@ -234,6 +238,7 @@ const SideNav = ({ open, onClose, userProfile, onNavigate, onLogout }) => {
 
         <ListItem
           button
+          onClick={() => navigateToPage("settings")}
           sx={{
             margin: "4px 8px",
             borderRadius: "8px",

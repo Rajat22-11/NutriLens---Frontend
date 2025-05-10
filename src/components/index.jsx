@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Container,
   Typography,
@@ -23,6 +23,10 @@ import {
   DialogContent,
   DialogActions,
   LinearProgress,
+  Paper,
+  Divider,
+  Fade,
+  Zoom,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
@@ -35,6 +39,13 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import SettingsIcon from "@mui/icons-material/Settings";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import StarIcon from "@mui/icons-material/Star";
+import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import axios from "axios";
 import api from "../utils/axios-config"; // Import the configured axios instance
 import parse from "html-react-parser";
@@ -66,6 +77,10 @@ const IndexPage = () => {
   const [currentQuote, setCurrentQuote] = useState(0);
   const [historyDialogOpen, setHistoryDialogOpen] = useState(false);
   const [analysisHistory, setAnalysisHistory] = useState([]);
+  const [cameraActive, setCameraActive] = useState(false);
+  const [showHero, setShowHero] = useState(true);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
   const navigate = useNavigate();
 
   // Effects
@@ -73,6 +88,18 @@ const IndexPage = () => {
     // Fetch user data on component mount
     fetchUserProfile();
     fetchAnalysisHistory();
+
+    // Add scroll event listener to hide hero section on scroll
+    const handleScroll = () => {
+      if (window.scrollY > 100) {
+        setShowHero(false);
+      } else {
+        setShowHero(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -120,49 +147,119 @@ const IndexPage = () => {
     }
   };
 
+  // Camera handling functions
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "environment" },
+      });
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        setCameraActive(true);
+      }
+    } catch (error) {
+      console.error("Error accessing camera:", error);
+      alert(
+        "Could not access camera. Please check permissions or try uploading an image instead."
+      );
+    }
+  };
+
+  const stopCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach((track) => track.stop());
+      videoRef.current.srcObject = null;
+      setCameraActive(false);
+    }
+  };
+
+  const captureImage = () => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      const context = canvas.getContext("2d");
+
+      // Set canvas dimensions to match video
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      // Draw the current video frame to the canvas
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Convert canvas to blob
+      canvas.toBlob(
+        async (blob) => {
+          if (blob) {
+            // Create a file from the blob
+            const file = new File([blob], "camera-capture.jpg", {
+              type: "image/jpeg",
+            });
+
+            // Set image preview
+            setImage(URL.createObjectURL(blob));
+
+            // Stop the camera
+            stopCamera();
+
+            // Process the captured image
+            await processImage(file);
+          }
+        },
+        "image/jpeg",
+        0.95
+      );
+    }
+  };
+
   const handleUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
       setImage(URL.createObjectURL(file));
-      setLoading(true);
-      const formData = new FormData();
-      formData.append("file", file);
+      await processImage(file);
+    }
+  };
 
-      try {
-        // Using the api instance with multipart/form-data
-        const response = await api.post("/predict", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+  const processImage = async (file) => {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("file", file);
 
-        setDetections(response.data.detections);
-        setGeminiAnalysis(response.data.gemini_analysis);
-        setAnnotatedImage(
-          `data:image/jpeg;base64,${response.data.annotated_image}`
-        );
+    try {
+      // Using the api instance with multipart/form-data
+      const response = await api.post("/predict", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-        // Calculate total calories
-        let totalCals = 0;
-        Object.entries(response.data.detections).forEach(([food, details]) => {
-          const calories = details.calories || 0;
-          totalCals += calories;
-        });
+      setDetections(response.data.detections);
+      setGeminiAnalysis(response.data.gemini_analysis);
+      setAnnotatedImage(
+        `data:image/jpeg;base64,${response.data.annotated_image}`
+      );
 
-        setTotalCalories(totalCals);
+      // Calculate total calories
+      let totalCals = 0;
+      Object.entries(response.data.detections).forEach(([food, details]) => {
+        const calories = details.calories || 0;
+        totalCals += calories;
+      });
 
-        // The analysis is already stored in the backend during the /predict call
-        // Just refresh the analysis history to show the latest data
-        if (localStorage.getItem("auth_token")) {
-          // Refresh analysis history
-          fetchAnalysisHistory();
-        }
+      setTotalCalories(totalCals);
 
-        setLoading(false);
-      } catch (error) {
-        console.error("Error uploading image:", error);
-        setLoading(false);
+      // The analysis is already stored in the backend during the /predict call
+      // Just refresh the analysis history to show the latest data
+      if (localStorage.getItem("auth_token")) {
+        // Refresh analysis history
+        fetchAnalysisHistory();
       }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      setLoading(false);
     }
   };
 
@@ -412,6 +509,61 @@ const IndexPage = () => {
           onLogout={handleLogout}
         />
 
+        {/* Hero Section */}
+        <Fade in={showHero} timeout={800}>
+          <Box className="hero-section">
+            <Container maxWidth="lg">
+              <Grid container spacing={4} alignItems="center">
+                <Grid item xs={12} md={6}>
+                  <Zoom in={true} timeout={1000}>
+                    <Box className="hero-content">
+                      <Typography
+                        variant="h2"
+                        className="hero-title"
+                        gutterBottom
+                      >
+                        Analyze Your Food with AI
+                      </Typography>
+                      <Typography
+                        variant="h5"
+                        className="hero-subtitle"
+                        paragraph
+                      >
+                        Get instant nutritional insights from your meals with
+                        our advanced AI technology
+                      </Typography>
+                      <Button
+                        variant="contained"
+                        size="large"
+                        color="secondary"
+                        endIcon={<ArrowForwardIcon />}
+                        onClick={() =>
+                          window.scrollTo({ top: 500, behavior: "smooth" })
+                        }
+                        className="hero-button"
+                      >
+                        Try It Now
+                      </Button>
+                    </Box>
+                  </Zoom>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Zoom in={true} timeout={1200}>
+                    <Box className="hero-image-container">
+                      <DotLottieReact
+                        src="https://lottie.host/c5f7e1c9-3cd1-4bd9-b6c4-e92ade1d50d9/jkx3THBWMj.json"
+                        loop
+                        autoplay
+                        style={{ width: "100%", maxWidth: 500 }}
+                      />
+                    </Box>
+                  </Zoom>
+                </Grid>
+              </Grid>
+            </Container>
+          </Box>
+        </Fade>
+
         {/* Main Content */}
         <Container className="main-container">
           <Grid
@@ -429,26 +581,68 @@ const IndexPage = () => {
                       <CloudUploadIcon
                         sx={{ mr: 1, verticalAlign: "bottom" }}
                       />
-                      Upload Your Food Photo
+                      Capture or Upload Your Food Photo
                     </Typography>
 
-                    <Button
-                      variant="contained"
-                      component="label"
-                      startIcon={<CloudUploadIcon />}
-                      size="large"
-                      fullWidth
-                      className="upload-button"
-                    >
-                      Select Image
-                      <input
-                        type="file"
-                        hidden
-                        onChange={handleUpload}
-                        accept="image/*"
-                      />
-                    </Button>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} sm={6}>
+                        <Button
+                          variant="contained"
+                          component="label"
+                          startIcon={<CloudUploadIcon />}
+                          size="large"
+                          fullWidth
+                          className="upload-button"
+                        >
+                          Select Image
+                          <input
+                            type="file"
+                            hidden
+                            onChange={handleUpload}
+                            accept="image/*"
+                          />
+                        </Button>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Button
+                          variant="outlined"
+                          color="secondary"
+                          startIcon={<CameraAltIcon />}
+                          size="large"
+                          fullWidth
+                          onClick={cameraActive ? stopCamera : startCamera}
+                          className="camera-button"
+                        >
+                          {cameraActive ? "Stop Camera" : "Use Camera"}
+                        </Button>
+                      </Grid>
+                    </Grid>
                   </Box>
+
+                  {cameraActive && (
+                    <Box className="camera-container" mt={2}>
+                      <Paper elevation={3} className="video-paper">
+                        <video
+                          ref={videoRef}
+                          autoPlay
+                          playsInline
+                          className="camera-preview"
+                        />
+                        <canvas ref={canvasRef} style={{ display: "none" }} />
+                        <Box className="camera-controls">
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={captureImage}
+                            startIcon={<PhotoCameraIcon />}
+                            className="capture-button"
+                          >
+                            Capture
+                          </Button>
+                        </Box>
+                      </Paper>
+                    </Box>
+                  )}
 
                   <Grid container spacing={2} justifyContent="center">
                     {image && (
@@ -553,6 +747,249 @@ const IndexPage = () => {
               )}
             </Grid>
           </Grid>
+
+          {/* Features Section */}
+          <Box className="features-section" mt={8} mb={8}>
+            <Typography
+              variant="h4"
+              align="center"
+              gutterBottom
+              className="section-title"
+            >
+              Why Choose Our AI Nutrition Analyzer
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              align="center"
+              paragraph
+              className="section-subtitle"
+            >
+              Powerful features to help you make better food choices
+            </Typography>
+
+            <Grid container spacing={4} mt={4}>
+              <Grid item xs={12} sm={6} md={3}>
+                <Zoom in={true} timeout={800}>
+                  <Paper elevation={2} className="feature-card">
+                    <Box className="feature-icon-container">
+                      <HealthAndSafetyIcon className="feature-icon" />
+                    </Box>
+                    <Typography variant="h6" className="feature-title">
+                      Accurate Analysis
+                    </Typography>
+                    <Typography variant="body2" className="feature-description">
+                      Our AI precisely identifies food items and provides
+                      detailed nutritional information
+                    </Typography>
+                  </Paper>
+                </Zoom>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={3}>
+                <Zoom in={true} timeout={1000}>
+                  <Paper elevation={2} className="feature-card">
+                    <Box className="feature-icon-container">
+                      <BarChartIcon className="feature-icon" />
+                    </Box>
+                    <Typography variant="h6" className="feature-title">
+                      Nutrition Tracking
+                    </Typography>
+                    <Typography variant="body2" className="feature-description">
+                      Keep track of your daily calorie intake and nutritional
+                      balance
+                    </Typography>
+                  </Paper>
+                </Zoom>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={3}>
+                <Zoom in={true} timeout={1200}>
+                  <Paper elevation={2} className="feature-card">
+                    <Box className="feature-icon-container">
+                      <CameraAltIcon className="feature-icon" />
+                    </Box>
+                    <Typography variant="h6" className="feature-title">
+                      Instant Capture
+                    </Typography>
+                    <Typography variant="body2" className="feature-description">
+                      Use your camera to instantly analyze meals wherever you
+                      are
+                    </Typography>
+                  </Paper>
+                </Zoom>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={3}>
+                <Zoom in={true} timeout={1400}>
+                  <Paper elevation={2} className="feature-card">
+                    <Box className="feature-icon-container">
+                      <RestaurantIcon className="feature-icon" />
+                    </Box>
+                    <Typography variant="h6" className="feature-title">
+                      Food Insights
+                    </Typography>
+                    <Typography variant="body2" className="feature-description">
+                      Get detailed insights about ingredients and health
+                      benefits
+                    </Typography>
+                  </Paper>
+                </Zoom>
+              </Grid>
+            </Grid>
+          </Box>
+
+          {/* Testimonials Section */}
+          <Box className="testimonials-section" mb={8}>
+            <Typography
+              variant="h4"
+              align="center"
+              gutterBottom
+              className="section-title"
+            >
+              What Our Users Say
+            </Typography>
+
+            <Grid container spacing={4} mt={2}>
+              <Grid item xs={12} md={4}>
+                <Card elevation={2} className="testimonial-card">
+                  <CardContent>
+                    <Box className="testimonial-rating">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <StarIcon key={star} className="star-icon" />
+                      ))}
+                    </Box>
+                    <Typography variant="body1" className="testimonial-text">
+                      "This app has completely changed how I track my nutrition.
+                      The AI is incredibly accurate and the insights are so
+                      helpful!"
+                    </Typography>
+                    <Box className="testimonial-user">
+                      <Avatar className="testimonial-avatar">S</Avatar>
+                      <Box>
+                        <Typography
+                          variant="subtitle2"
+                          className="testimonial-name"
+                        >
+                          Sarah Johnson
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          className="testimonial-title"
+                        >
+                          Fitness Enthusiast
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <Card elevation={2} className="testimonial-card">
+                  <CardContent>
+                    <Box className="testimonial-rating">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <StarIcon key={star} className="star-icon" />
+                      ))}
+                    </Box>
+                    <Typography variant="body1" className="testimonial-text">
+                      "As a nutritionist, I recommend this app to all my
+                      clients. It makes tracking food intake so much easier and
+                      more accurate."
+                    </Typography>
+                    <Box className="testimonial-user">
+                      <Avatar className="testimonial-avatar">M</Avatar>
+                      <Box>
+                        <Typography
+                          variant="subtitle2"
+                          className="testimonial-name"
+                        >
+                          Michael Chen
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          className="testimonial-title"
+                        >
+                          Certified Nutritionist
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <Card elevation={2} className="testimonial-card">
+                  <CardContent>
+                    <Box className="testimonial-rating">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <StarIcon key={star} className="star-icon" />
+                      ))}
+                    </Box>
+                    <Typography variant="body1" className="testimonial-text">
+                      "I've lost 15 pounds since I started using this app! Being
+                      able to quickly analyze my meals has made healthy eating
+                      so much easier."
+                    </Typography>
+                    <Box className="testimonial-user">
+                      <Avatar className="testimonial-avatar">J</Avatar>
+                      <Box>
+                        <Typography
+                          variant="subtitle2"
+                          className="testimonial-name"
+                        >
+                          Jessica Williams
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          className="testimonial-title"
+                        >
+                          Weight Loss Journey
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
+          </Box>
+
+          {/* Call to Action */}
+          <Box className="cta-section" mb={8}>
+            <Paper elevation={3} className="cta-paper">
+              <Grid container alignItems="center">
+                <Grid item xs={12} md={8}>
+                  <Typography variant="h4" className="cta-title">
+                    Ready to transform your nutrition habits?
+                  </Typography>
+                  <Typography variant="subtitle1" className="cta-subtitle">
+                    Join thousands of users who are making healthier food
+                    choices with AI assistance
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <Box
+                    display="flex"
+                    justifyContent={{ xs: "center", md: "flex-end" }}
+                    mt={{ xs: 3, md: 0 }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="large"
+                      endIcon={<ArrowForwardIcon />}
+                      onClick={() =>
+                        window.scrollTo({ top: 0, behavior: "smooth" })
+                      }
+                      className="cta-button"
+                    >
+                      Get Started Now
+                    </Button>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Paper>
+          </Box>
         </Container>
 
         {/* Loading Overlay */}

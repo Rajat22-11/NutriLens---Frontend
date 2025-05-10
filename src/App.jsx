@@ -4,6 +4,7 @@ import AppTheme from "./themes/AppTheme";
 import AuthPage from "./components/loginSignup";
 import Index from "./components/index";
 import Dashboard from "./components/dashboard";
+import Settings from "./components/Settings";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/login" element={<AuthPage />} />
           <Route path="/index" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </Router>
     </AppTheme>
