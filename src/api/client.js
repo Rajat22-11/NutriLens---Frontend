@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const DEFAULT_PROD_API = "https://nutrilens-api-v2.onrender.com";
+const DEFAULT_PROD_API = "https://nutrilens-backend-aet6.onrender.com";
 
 export const API_URL = (
   import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:5000" : DEFAULT_PROD_API)

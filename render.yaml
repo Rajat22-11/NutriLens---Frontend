@@ -1,20 +1,19 @@
-# Render Blueprint for the NutriLens web app (v2).
-# Connect once via Render Dashboard -> New -> Blueprint -> this repo, branch `v2-redesign`.
-# After that every push to that branch rebuilds and redeploys automatically.
+# Render Blueprint for the NutriLens web app.
+# Every push to `main` rebuilds and redeploys automatically.
 services:
   - type: web
     runtime: static
-    name: nutrilens-web-v2
-    branch: v2-redesign
+    name: NutriLens---Frontend
+    branch: main
     autoDeployTrigger: commit
     buildCommand: npm ci && npm run build
     staticPublishPath: ./dist
     envVars:
       - key: NODE_VERSION
         value: "22"
-      # URL of the backend service created by the NutriLens---Backend blueprint
+      # URL of the NutriLens API
       - key: VITE_API_URL
-        value: https://nutrilens-api-v2.onrender.com
+        value: https://nutrilens-backend-aet6.onrender.com
     headers:
       - path: /assets/*
         name: Cache-Control
